@@ -9,6 +9,7 @@ from mesh_manage.Module.channel_mesh import ChannelMesh
 from scan2cad_dataset_manage.Data.dataset import Dataset
 
 from scan2cad_dataset_manage.Method.bbox import getNearestModelIdxByBBoxDist
+from scan2cad_dataset_manage.Method.render import renderScan2CADBBox
 
 
 class DatasetLoader(object):
@@ -95,3 +96,7 @@ class DatasetLoader(object):
             scannet_scene_name, min_bbox_dist_model_idx)
         assert os.path.exists(shapenet_model_file_path)
         return shapenet_model_file_path
+
+    def renderScan2CADBBox(self, scannet_scene_name):
+        assert scannet_scene_name in self.dataset.scene_dict.keys()
+        return renderScan2CADBBox(self.dataset.scene_dict[scannet_scene_name])
