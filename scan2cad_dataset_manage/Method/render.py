@@ -19,7 +19,7 @@ def renderScan2CADBBox(scene):
         model_file_path = shapenet_dataset_folder_path + \
             model.cad_cat_id + "/" + model.cad_id + "/models/model_normalized.obj"
         mesh = o3d.io.read_triangle_mesh(model_file_path)
-        mesh.transform(model.trans_matrix)
+        mesh.transform(model.trans_model_to_scan_matrix)
         mesh_list.append(mesh)
 
     gt_mesh = o3d.io.read_triangle_mesh(gt_mesh_file_path)
