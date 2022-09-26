@@ -11,6 +11,8 @@ def renderScan2CADBBox(scene):
     gt_mesh_file_path = \
         "/home/chli/chLi/ScanNet/scans/scene0474_02/scene0474_02_vh_clean.ply"
 
+    gt_mesh = o3d.io.read_triangle_mesh(gt_mesh_file_path)
+
     bbox_list = []
     mesh_list = []
 
@@ -21,8 +23,6 @@ def renderScan2CADBBox(scene):
         mesh = o3d.io.read_triangle_mesh(model_file_path)
         mesh.transform(model.trans_model_to_scan_matrix)
         mesh_list.append(mesh)
-
-    gt_mesh = o3d.io.read_triangle_mesh(gt_mesh_file_path)
 
     o3d.visualization.draw_geometries(bbox_list + mesh_list + [gt_mesh])
     return True
