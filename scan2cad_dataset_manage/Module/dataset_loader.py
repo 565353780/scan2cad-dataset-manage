@@ -42,6 +42,10 @@ class DatasetLoader(object):
 
         self.cad_appearances_json = None
         self.unique_cad_csv = None
+
+        if self.dataset is not None:
+            del self.dataset
+            self.dataset = None
         return True
 
     def loadDataset(self, dataset_folder_path, scannet_dataset_folder_path,
@@ -50,6 +54,8 @@ class DatasetLoader(object):
         assert os.path.exists(scannet_dataset_folder_path)
         assert os.path.exists(shapenet_dataset_folder_path)
 
+        self.reset()
+
         self.dataset_folder_path = dataset_folder_path
         self.scannet_dataset_folder_path = scannet_dataset_folder_path
         self.shapenet_dataset_folder_path = shapenet_dataset_folder_path
@@ -57,7 +63,7 @@ class DatasetLoader(object):
         #  cad_appearances_json_file_path = self.dataset_folder_path + "cad_appearances.json"
         #  assert os.path.exists(cad_appearances_json_file_path)
         #  with open(cad_appearances_json_file_path, "r") as f:
-        #     cad_appearances_json = json.load(f)
+        #     self.cad_appearances_json = json.load(f)
 
         full_annotations_json_file_path = self.dataset_folder_path + "full_annotations.json"
         assert os.path.exists(full_annotations_json_file_path)
@@ -87,7 +93,6 @@ class DatasetLoader(object):
         assert scannet_scene_name in self.dataset.scene_dict.keys()
 
         object_bbox = ChannelMesh(scannet_object_file_path).getBBox()
-        object_bbox.outputInfo()
 
         min_bbox_dist_model_idx = getNearestModelIdxByBBoxDist(
             object_bbox, self.dataset.scene_dict[scannet_scene_name])
