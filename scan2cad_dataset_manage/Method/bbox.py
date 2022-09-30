@@ -39,6 +39,37 @@ def getNearestModelIdxByBBoxDist(bbox, scene):
     return min_bbox_dist_model_idx
 
 
+def getTransBBox(bbox, trans_matrix):
+    bbox_point_list = [
+        [bbox.min_point.x, bbox.min_point.y, bbox.min_point.z, 1],
+        [bbox.min_point.x, bbox.min_point.y, bbox.max_point.z, 1],
+        [bbox.min_point.x, bbox.max_point.y, bbox.min_point.z, 1],
+        [bbox.min_point.x, bbox.max_point.y, bbox.max_point.z, 1],
+        [bbox.max_point.x, bbox.min_point.y, bbox.min_point.z, 1],
+        [bbox.max_point.x, bbox.min_point.y, bbox.max_point.z, 1],
+        [bbox.max_point.x, bbox.max_point.y, bbox.min_point.z, 1],
+        [bbox.max_point.x, bbox.max_point.y, bbox.max_point.z, 1]
+    ]
+
+    bbox_point_array = np.array(bbox_point_list).transpose(1, 0)
+    trans_bbox_point_array = np.matmul(trans_matrix,
+                                       bbox_point_array).transpose(1, 0)[:, :3]
+
+    min_point_list = [
+        np.min(trans_bbox_point_array[:, 0]),
+        np.min(trans_bbox_point_array[:, 1]),
+        np.min(trans_bbox_point_array[:, 2])
+    ]
+    max_point_list = [
+        np.max(trans_bbox_point_array[:, 0]),
+        np.max(trans_bbox_point_array[:, 1]),
+        np.max(trans_bbox_point_array[:, 2])
+    ]
+
+    trans_bbox = BBox.fromList([min_point_list, max_point_list])
+    return trans_bbox
+
+
 def getOpen3DBBox():
     line_set = o3d.geometry.LineSet(points=o3d.utility.Vector3dVector(POINTS),
                                     lines=o3d.utility.Vector2iVector(LINES))

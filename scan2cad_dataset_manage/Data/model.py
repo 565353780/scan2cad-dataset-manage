@@ -7,6 +7,8 @@ from scan2cad_dataset_manage.Data.trans import Trans
 from scan2cad_dataset_manage.Data.point import Point
 from scan2cad_dataset_manage.Data.bbox import BBox
 
+from scan2cad_dataset_manage.Method.bbox import getTransBBox
+
 
 class Model(object):
 
@@ -69,15 +71,8 @@ class Model(object):
         return True
 
     def updateTransBBox(self):
-
-        bbox_list = self.bbox.toList()
-        bbox_list[0].append(1)
-        bbox_list[1].append(1)
-
-        bbox_array = np.array(bbox_list).transpose(1, 0)
-        trans_bbox_array = np.matmul(self.trans_model_to_scan_matrix,
-                                     bbox_array).transpose(1, 0)[:, :3]
-        self.trans_bbox = BBox.fromList(trans_bbox_array)
+        self.trans_bbox = getTransBBox(self.bbox,
+                                       self.trans_model_to_scan_matrix)
         return True
 
     def loadModelDict(self, model_dict, trans_world_to_scan_matrix):
