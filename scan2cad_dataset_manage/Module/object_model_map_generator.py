@@ -127,7 +127,7 @@ class ObjectModelMapGenerator(object):
 
         createFileFolder(save_map_json_file_path)
         with open(save_map_json_file_path, "w") as f:
-            f.write(json.dumps(scene_object_model_map_dict, indent=4))
+            json.dump(scene_object_model_map_dict, f, indent=4)
         return True
 
     def generateAllSceneObjectModelMap(self,
