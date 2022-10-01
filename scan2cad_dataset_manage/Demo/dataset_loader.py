@@ -17,7 +17,7 @@ def demo():
                                    scannet_dataset_folder_path,
                                    shapenet_dataset_folder_path)
 
-    scannet_scene_name = "scene0474_02"
+    scannet_scene_name = "scene0013_02"
 
     dataset_loader.renderScan2CADBBox(scannet_scene_name)
     return True
