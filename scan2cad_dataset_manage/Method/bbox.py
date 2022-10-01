@@ -59,16 +59,8 @@ def getTransBBox(bbox, trans_matrix):
     trans_bbox_point_array = np.matmul(trans_matrix,
                                        bbox_point_array).transpose(1, 0)[:, :3]
 
-    min_point_list = [
-        np.min(trans_bbox_point_array[:, 0]),
-        np.min(trans_bbox_point_array[:, 1]),
-        np.min(trans_bbox_point_array[:, 2])
-    ]
-    max_point_list = [
-        np.max(trans_bbox_point_array[:, 0]),
-        np.max(trans_bbox_point_array[:, 1]),
-        np.max(trans_bbox_point_array[:, 2])
-    ]
+    min_point_list = [np.min(trans_bbox_point_array[:, i]) for i in range(3)]
+    max_point_list = [np.max(trans_bbox_point_array[:, i]) for i in range(3)]
 
     trans_bbox = BBox.fromList([min_point_list, max_point_list])
     return trans_bbox
