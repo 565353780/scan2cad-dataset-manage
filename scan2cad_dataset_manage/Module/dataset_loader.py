@@ -104,4 +104,8 @@ class DatasetLoader(object):
 
     def renderScan2CADBBox(self, scannet_scene_name):
         assert scannet_scene_name in self.dataset.scene_dict.keys()
-        return renderScan2CADBBox(self.dataset.scene_dict[scannet_scene_name])
+
+        scannet_scene_file_path = self.scannet_dataset_folder_path + scannet_scene_name + "/" + scannet_scene_name + "_vh_clean.ply"
+        assert os.path.exists(scannet_scene_file_path)
+
+        return renderScan2CADBBox(self.dataset.scene_dict[scannet_scene_name], scannet_scene_file_path)
