@@ -39,7 +39,7 @@ def getNearestModelIdxByBBoxDist(bbox, scene):
     return min_bbox_dist_model_idx
 
 
-def getTransBBox(bbox, trans_matrix):
+def getBBoxPointList(bbox):
     bbox_point_list = [
         [bbox.min_point.x, bbox.min_point.y, bbox.min_point.z, 1],
         [bbox.min_point.x, bbox.min_point.y, bbox.max_point.z, 1],
@@ -50,7 +50,11 @@ def getTransBBox(bbox, trans_matrix):
         [bbox.max_point.x, bbox.max_point.y, bbox.min_point.z, 1],
         [bbox.max_point.x, bbox.max_point.y, bbox.max_point.z, 1]
     ]
+    return bbox_point_list
 
+
+def getTransBBox(bbox, trans_matrix):
+    bbox_point_list = getBBoxPointList(bbox)
     bbox_point_array = np.array(bbox_point_list).transpose(1, 0)
     trans_bbox_point_array = np.matmul(trans_matrix,
                                        bbox_point_array).transpose(1, 0)[:, :3]
@@ -68,6 +72,14 @@ def getTransBBox(bbox, trans_matrix):
 
     trans_bbox = BBox.fromList([min_point_list, max_point_list])
     return trans_bbox
+
+
+def getTransBBoxArray(bbox, trans_matrix):
+    bbox_point_list = getBBoxPointList(bbox)
+    bbox_point_array = np.array(bbox_point_list).transpose(1, 0)
+    trans_bbox_point_array = np.matmul(trans_matrix,
+                                       bbox_point_array).transpose(1, 0)[:, :3]
+    return trans_bbox_point_array
 
 
 def getOpen3DBBox():
@@ -100,3 +112,12 @@ def getOpen3DBBoxFromBBox(bbox, color=[255, 0, 0]):
         points)
     open3d_bbox.color = np.array(color, dtype=np.float32) / 255.0
     return open3d_bbox
+
+
+def getOpen3DBBoxFromBBoxArray(bbox_array, color=[255, 0, 0]):
+    colors = np.array([color for _ in LINES], dtype=float) / 255.0
+    line_set = o3d.geometry.LineSet(
+        points=o3d.utility.Vector3dVector(bbox_array),
+        lines=o3d.utility.Vector2iVector(LINES))
+    line_set.colors = o3d.utility.Vector3dVector(colors)
+    return line_set
