@@ -29,6 +29,14 @@ class Trans(object):
                           self.rotation[3])
         return quat
 
+    def toDict(self):
+        trans_dict = {
+            "translation": self.translation,
+            "rotation": self.rotation,
+            "scale": self.scale
+        }
+        return trans_dict
+
     def outputInfo(self, info_level=0):
         line_start = "\t" * info_level
 
