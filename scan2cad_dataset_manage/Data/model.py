@@ -70,7 +70,7 @@ class Model(object):
         self.scan_keypoint_list = model_dict['keypoints_scan']['position']
         return True
 
-    def updateTransBBox(self):
+    def updateTransBBoxArray(self):
         self.trans_bbox_array = getTransBBoxArray(
             self.bbox, self.trans_model_to_scan_matrix)
         return True
@@ -81,5 +81,17 @@ class Model(object):
         assert self.loadSym(model_dict)
         assert self.loadCAD(model_dict)
         assert self.loadKeyPoints(model_dict)
-        assert self.updateTransBBox()
+        assert self.updateTransBBoxArray()
         return True
+
+    def toDict(self):
+        model_dict = {
+            "bbox": self.bbox.toList(),
+            "center": self.center.toList(),
+            "sym": self.sym,
+            "cad_id": self.cad_id,
+            "cad_cat_id": self.cad_cat_id,
+            "trans_matrix": self.trans_model_to_scan_matrix.tolist(),
+            "trans_bbox_array": self.trans_bbox_array.tolist()
+        }
+        return model_dict
