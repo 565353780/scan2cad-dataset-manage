@@ -3,7 +3,7 @@
 
 import open3d as o3d
 
-from scan2cad_dataset_manage.Method.bbox import getOpen3DBBoxFromBBox
+from scan2cad_dataset_manage.Method.bbox import getOpen3DBBoxFromBBoxArray
 
 
 def renderScan2CADBBox(scene):
@@ -17,7 +17,7 @@ def renderScan2CADBBox(scene):
     mesh_list = []
 
     for model in scene.model_list:
-        bbox_list.append(getOpen3DBBoxFromBBox(model.trans_bbox))
+        bbox_list.append(getOpen3DBBoxFromBBoxArray(model.trans_bbox_array))
         model_file_path = shapenet_dataset_folder_path + \
             model.cad_cat_id + "/" + model.cad_id + "/models/model_normalized.obj"
         mesh = o3d.io.read_triangle_mesh(model_file_path)
