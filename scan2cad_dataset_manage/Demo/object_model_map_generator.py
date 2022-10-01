@@ -5,27 +5,23 @@ import sys
 
 sys.path.append("../mesh-manage")
 
-from scan2cad_dataset_manage.Module.dataset_loader import DatasetLoader
+from scan2cad_dataset_manage.Module.object_model_map_generator import ObjectModelMapGenerator
 
 
 def demo():
     dataset_folder_path = "/home/chli/chLi/Scan2CAD/scan2cad_dataset/"
     scannet_dataset_folder_path = "/home/chli/chLi/ScanNet/scans/"
-    scannet_bbox_dataset_folder_path = "/home/chli/chLi/ScanNet/bboxes/"
     shapenet_dataset_folder_path = "/home/chli/chLi/ShapeNet/Core/ShapeNetCore.v2/"
-    scannet_scene_name = "scene0474_02"
-    #  scannet_object_file_path = "/home/chli/chLi/ScanNet/objects/scene0474_02/34_monitor.ply"
-    scannet_object_file_path = "/home/chli/chLi/ScanNet/objects/scene0474_02/1_chair.ply"
+    scannet_object_dataset_folder_path = "/home/chli/chLi/ScanNet/objects/"
+    scannet_bbox_dataset_folder_path = "/home/chli/chLi/ScanNet/bboxes/"
+    save_map_json_folder_path = "/home/chli/chLi/Scan2CAD/object_model_maps/"
+    print_progress = True
 
-    dataset_loader = DatasetLoader(dataset_folder_path,
-                                   scannet_dataset_folder_path,
-                                   shapenet_dataset_folder_path)
+    object_model_map_generator = ObjectModelMapGenerator(
+        dataset_folder_path, scannet_dataset_folder_path,
+        shapenet_dataset_folder_path, scannet_object_dataset_folder_path,
+        scannet_bbox_dataset_folder_path)
 
-    shapenet_model_file_path = dataset_loader.getShapeNetModelFilePathByBBoxDist(
-        scannet_scene_name, scannet_object_file_path)
-    print(scannet_object_file_path)
-    print("-->")
-    print(shapenet_model_file_path)
-
-    dataset_loader.renderScan2CADBBox(scannet_scene_name)
+    object_model_map_generator.generateAllSceneObjectModelMap(
+        save_map_json_folder_path, print_progress)
     return True
