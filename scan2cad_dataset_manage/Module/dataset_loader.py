@@ -9,7 +9,7 @@ from mesh_manage.Module.channel_mesh import ChannelMesh
 from scan2cad_dataset_manage.Data.dataset import Dataset
 
 from scan2cad_dataset_manage.Method.bbox import getNearestModelIdxByBBoxDist
-from scan2cad_dataset_manage.Method.render import renderScan2CADBBox
+from scan2cad_dataset_manage.Method.render import renderScan2CADScene
 
 
 class DatasetLoader(object):
@@ -46,7 +46,7 @@ class DatasetLoader(object):
         if self.dataset is not None:
             del self.dataset
             self.dataset = None
-        return True
+        return
 
     def loadDataset(self, dataset_folder_path, scannet_dataset_folder_path,
                     shapenet_dataset_folder_path):
@@ -72,7 +72,13 @@ class DatasetLoader(object):
             scene_dict_list = json.load(f)
 
         self.dataset = Dataset(scene_dict_list)
-        return True
+        return
+
+    def getSceneNameList(self):
+        return self.dataset.scene_dict.keys()
+
+    def isSceneValid(self, scene_name):
+        return scene_name in self.dataset.scene_dict.keys()
 
     def getScanNetSceneFolderPath(self, scannet_scene_name):
         assert scannet_scene_name in self.dataset.scene_dict.keys()
@@ -102,12 +108,13 @@ class DatasetLoader(object):
         assert os.path.exists(shapenet_model_file_path)
         return shapenet_model_file_path
 
-    def renderScan2CADBBox(self, scannet_scene_name):
+    def renderScan2CADScene(self, scannet_scene_name):
         assert scannet_scene_name in self.dataset.scene_dict.keys()
 
         scannet_scene_file_path = self.scannet_dataset_folder_path + \
             scannet_scene_name + "/" + scannet_scene_name + "_vh_clean.ply"
         assert os.path.exists(scannet_scene_file_path)
 
-        return renderScan2CADBBox(self.dataset.scene_dict[scannet_scene_name],
-                                  scannet_scene_file_path)
+        renderScan2CADScene(self.dataset.scene_dict[scannet_scene_name],
+                            scannet_scene_file_path)
+        return
