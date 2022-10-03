@@ -24,4 +24,4 @@ def demo():
 
     object_model_map_generator.generateAllSceneObjectModelMap(
         save_map_json_folder_path, print_progress)
-    return True
+    return
