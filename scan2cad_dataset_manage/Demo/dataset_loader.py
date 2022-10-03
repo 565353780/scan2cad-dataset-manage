@@ -18,6 +18,7 @@ def demo():
                                    shapenet_dataset_folder_path)
 
     scannet_scene_name = "scene0013_02"
+    assert dataset_loader.isSceneValid(scannet_scene_name)
 
-    dataset_loader.renderScan2CADBBox(scannet_scene_name)
-    return True
+    dataset_loader.renderScan2CADScene(scannet_scene_name)
+    return
