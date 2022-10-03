@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import json
 import os
+import json
+
+from scan2cad_dataset_manage.Method.render import renderScan2CADObjectModelMap
 
 
 class ObjectModelMapManager(object):
@@ -56,10 +58,14 @@ class ObjectModelMapManager(object):
             self.object_model_map_dataset_folder_path)
         return
 
+    def isSceneValid(self, scene_name):
+        return scene_name in self.scene_name_list
+
     def loadScene(self, scene_name):
         if scene_name == self.scene_name:
             return
-        assert scene_name in self.scene_name_list
+
+        assert self.isSceneValid(scene_name)
 
         object_model_map_json_file_path = self.object_model_map_dataset_folder_path + \
             scene_name + "/object_model_map.json"
@@ -69,11 +75,25 @@ class ObjectModelMapManager(object):
             self.scene_object_model_map_dict = json.load(f)
         return
 
+    def getObjectFileNameList(self, scene_name):
+        if not self.isSceneValid(scene_name):
+            print("[WARN][ObjectModelMapManager::getObjectFileNameList]")
+            print("\t scene not valid!")
+            print("\t", scene_name)
+            return []
+
+        self.loadScene(scene_name)
+        return self.scene_object_model_map_dict.keys()
+
+    def isObjectValid(self, scene_name, object_file_name):
+        return object_file_name in self.getObjectFileNameList(scene_name)
+
     def getShapeNetModelDict(self, scene_name, object_file_name):
         self.loadScene(scene_name)
 
         assert self.scene_object_model_map_dict is not None
-        assert object_file_name in self.scene_object_model_map_dict.keys()
+
+        assert self.isObjectValid(scene_name, object_file_name)
 
         shapenet_model_dict = self.scene_object_model_map_dict[
             object_file_name]
@@ -93,3 +113,17 @@ class ObjectModelMapManager(object):
             "shapenet_model_file_path"] = shapenet_model_file_path
 
         return shapenet_model_dict
+
+    def renderScan2CADObjectModelMap(self, scene_name, object_file_name, render_scene=False):
+        shapenet_model_dict = self.getShapeNetModelDict(
+            scene_name, object_file_name)
+
+        scannet_scene_file_path = None
+        if render_scene:
+            scannet_dataset_folder_path = "/home/chli/chLi/ScanNet/scans/"
+            scannet_scene_file_path = scannet_dataset_folder_path + \
+                scene_name + "/" + scene_name + "_vh_clean.ply"
+
+        renderScan2CADObjectModelMap(shapenet_model_dict,
+                                     scannet_scene_file_path)
+        return
