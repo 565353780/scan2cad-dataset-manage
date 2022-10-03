@@ -114,7 +114,10 @@ class ObjectModelMapManager(object):
 
         return shapenet_model_dict
 
-    def renderScan2CADObjectModelMap(self, scene_name, object_file_name, render_scene=False):
+    def renderScan2CADObjectModelMap(self,
+                                     scene_name,
+                                     object_file_name,
+                                     render_scene=False):
         shapenet_model_dict = self.getShapeNetModelDict(
             scene_name, object_file_name)
 
