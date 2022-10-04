@@ -46,7 +46,7 @@ class DatasetLoader(object):
         if self.dataset is not None:
             del self.dataset
             self.dataset = None
-        return
+        return True
 
     def loadDataset(self, dataset_folder_path, scannet_dataset_folder_path,
                     shapenet_dataset_folder_path):
@@ -72,7 +72,7 @@ class DatasetLoader(object):
             scene_dict_list = json.load(f)
 
         self.dataset = Dataset(scene_dict_list)
-        return
+        return True
 
     def getSceneNameList(self):
         return self.dataset.scene_dict.keys()
@@ -117,4 +117,4 @@ class DatasetLoader(object):
 
         renderScan2CADScene(self.dataset.scene_dict[scannet_scene_name],
                             scannet_scene_file_path)
-        return
+        return True

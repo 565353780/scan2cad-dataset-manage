@@ -59,9 +59,9 @@ class ObjectModelMapGenerator(object):
 
         self.reset()
 
-        assert self.dataset_loader.loadDataset(dataset_folder_path,
-                                               scannet_dataset_folder_path,
-                                               shapenet_dataset_folder_path)
+        self.dataset_loader.loadDataset(dataset_folder_path,
+                                        scannet_dataset_folder_path,
+                                        shapenet_dataset_folder_path)
 
         self.scannet_object_dataset_folder_path = scannet_object_dataset_folder_path
         self.scannet_bbox_dataset_folder_path = scannet_bbox_dataset_folder_path
@@ -144,6 +144,5 @@ class ObjectModelMapGenerator(object):
             for_data = tqdm(for_data)
         for scene_name, scene in for_data:
             save_map_json_file_path = save_map_json_folder_path + scene_name + "/object_model_map.json"
-            assert self.generateSceneObjectModelMap(scene,
-                                                    save_map_json_file_path)
+            self.generateSceneObjectModelMap(scene, save_map_json_file_path)
         return True
