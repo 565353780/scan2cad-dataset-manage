@@ -6,7 +6,7 @@ import json
 import numpy as np
 from tqdm import tqdm
 
-from scan2cad_dataset_manage.Method.path import createFileFolder
+from scan2cad_dataset_manage.Method.path import createFileFolder, renameFile
 from scan2cad_dataset_manage.Module.dataset_loader import DatasetLoader
 
 
@@ -71,8 +71,6 @@ class ObjectModelMapGenerator(object):
     def generateSceneObjectModelMap(self, scene, save_map_json_file_path):
         scannet_scene_bbox_json_file_path = self.scannet_bbox_dataset_folder_path + \
             scene.scene_name + "/object_bbox.json"
-        if not os.path.exists(scannet_scene_bbox_json_file_path):
-            return True
         assert os.path.exists(scannet_scene_bbox_json_file_path)
 
         with open(scannet_scene_bbox_json_file_path, "r") as f:
@@ -143,6 +141,14 @@ class ObjectModelMapGenerator(object):
             print("\t start generate object model map json for all scenes...")
             for_data = tqdm(for_data)
         for scene_name, scene in for_data:
-            save_map_json_file_path = save_map_json_folder_path + scene_name + "/object_model_map.json"
-            self.generateSceneObjectModelMap(scene, save_map_json_file_path)
+            save_map_json_file_path = save_map_json_folder_path + \
+                scene_name + "/object_model_map.json"
+
+            if os.path.exists(save_map_json_file_path):
+                continue
+
+            tmp_save_map_json_file_path = save_map_json_file_path[:-5] + "_tmp.json"
+            self.generateSceneObjectModelMap(scene, tmp_save_map_json_file_path)
+
+            renameFile(tmp_save_map_json_file_path, save_map_json_file_path)
         return True
