@@ -39,7 +39,7 @@ class ObjectModelMapManager(object):
 
         self.scene_name_list = None
         self.scene_object_model_map_dict = None
-        return
+        return True
 
     def loadDataset(self, scannet_object_dataset_folder_path,
                     shapenet_dataset_folder_path,
@@ -56,14 +56,14 @@ class ObjectModelMapManager(object):
 
         self.scene_name_list = os.listdir(
             self.object_model_map_dataset_folder_path)
-        return
+        return True
 
     def isSceneValid(self, scene_name):
         return scene_name in self.scene_name_list
 
     def loadScene(self, scene_name):
         if scene_name == self.scene_name:
-            return
+            return True
 
         assert self.isSceneValid(scene_name)
 
@@ -73,7 +73,7 @@ class ObjectModelMapManager(object):
 
         with open(object_model_map_json_file_path, "r") as f:
             self.scene_object_model_map_dict = json.load(f)
-        return
+        return True
 
     def getObjectFileNameList(self, scene_name):
         if not self.isSceneValid(scene_name):
@@ -83,7 +83,7 @@ class ObjectModelMapManager(object):
             return []
 
         self.loadScene(scene_name)
-        return self.scene_object_model_map_dict.keys()
+        return list(self.scene_object_model_map_dict.keys())
 
     def isObjectValid(self, scene_name, object_file_name):
         return object_file_name in self.getObjectFileNameList(scene_name)
@@ -129,4 +129,4 @@ class ObjectModelMapManager(object):
 
         renderScan2CADObjectModelMap(shapenet_model_dict,
                                      scannet_scene_file_path)
-        return
+        return True
