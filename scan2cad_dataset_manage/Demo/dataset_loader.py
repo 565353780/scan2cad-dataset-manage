@@ -21,4 +21,4 @@ def demo():
     assert dataset_loader.isSceneValid(scannet_scene_name)
 
     dataset_loader.renderScan2CADScene(scannet_scene_name)
-    return
+    return True
