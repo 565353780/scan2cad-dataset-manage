@@ -3,7 +3,9 @@
 
 import os
 import json
+import numpy as np
 
+from scan2cad_dataset_manage.Method.matrix import make_M_from_tqs, decompose_mat4
 from scan2cad_dataset_manage.Method.render import renderScan2CADObjectModelMap
 
 
@@ -98,6 +100,12 @@ class ObjectModelMapManager(object):
         shapenet_model_dict = self.scene_object_model_map_dict[
             object_file_name]
 
+        trans_matrix = np.array(shapenet_model_dict['trans_matrix'])
+        t, q, s = decompose_mat4(trans_matrix)
+        shapenet_model_dict['translate'] = t.tolist()
+        shapenet_model_dict['rotate'] = q.tolist()
+        shapenet_model_dict['scale'] = s.tolist()
+
         scannet_object_file_path = self.scannet_object_dataset_folder_path + \
             scene_name + "/" + object_file_name
         assert os.path.exists(scannet_object_file_path)
@@ -111,7 +119,6 @@ class ObjectModelMapManager(object):
             "scannet_object_file_path"] = scannet_object_file_path
         shapenet_model_dict[
             "shapenet_model_file_path"] = shapenet_model_file_path
-
         return shapenet_model_dict
 
     def renderScan2CADObjectModelMap(self,
