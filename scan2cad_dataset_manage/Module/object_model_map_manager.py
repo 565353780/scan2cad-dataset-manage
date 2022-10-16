@@ -101,10 +101,19 @@ class ObjectModelMapManager(object):
             object_file_name]
 
         trans_matrix = np.array(shapenet_model_dict['trans_matrix'])
+
         t, q, s = decompose_mat4(trans_matrix)
         shapenet_model_dict['translate'] = t.tolist()
         shapenet_model_dict['rotate'] = q.tolist()
         shapenet_model_dict['scale'] = s.tolist()
+
+        trans_matrix_inv = np.linalg.inv(trans_matrix)
+        shapenet_model_dict['trans_matrix_inv'] = trans_matrix_inv.tolist()
+
+        t_inv, q_inv, s_inv = decompose_mat4(trans_matrix_inv)
+        shapenet_model_dict['translate_inv'] = t_inv.tolist()
+        shapenet_model_dict['rotate_inv'] = q_inv.tolist()
+        shapenet_model_dict['scale_inv'] = s_inv.tolist()
 
         scannet_object_file_path = self.scannet_object_dataset_folder_path + \
             scene_name + "/" + object_file_name
