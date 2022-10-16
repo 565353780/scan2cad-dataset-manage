@@ -14,9 +14,14 @@ def demo():
         object_model_map_dataset_folder_path)
 
     scannet_scene_name = "scene0013_02"
+    scannet_scene_name = "scene0474_02"
     assert object_model_map_manager.isSceneValid(scannet_scene_name)
 
-    scannet_object_file_name = "0_chair.ply"
+    object_file_name_list = object_model_map_manager.getObjectFileNameList(scannet_scene_name)
+    print("object_file_name_list:")
+    print(object_file_name_list)
+
+    scannet_object_file_name = object_file_name_list[0]
     assert object_model_map_manager.isObjectValid(scannet_scene_name, scannet_object_file_name)
 
     shapenet_model_dict = object_model_map_manager.getShapeNetModelDict(
@@ -25,4 +30,4 @@ def demo():
     print(shapenet_model_dict)
 
     object_model_map_manager.renderScan2CADObjectModelMap(scannet_scene_name, scannet_object_file_name)
-    return
+    return True
