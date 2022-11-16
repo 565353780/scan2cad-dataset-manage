@@ -28,6 +28,7 @@ def demo():
         scannet_scene_name, scannet_object_file_name)
 
     print(shapenet_model_dict)
+    print(shapenet_model_dict.keys())
 
     object_model_map_manager.renderScan2CADObjectModelMap(scannet_scene_name, scannet_object_file_name)
     return True
