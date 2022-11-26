@@ -25,6 +25,7 @@ def renderScan2CADScene(scene, scannet_scene_file_path=None):
             shapenet_model.cad_cat_id + "/" + shapenet_model.cad_id + "/models/model_normalized.obj"
         assert os.path.exists(shapenet_model_file_path)
         shapenet_model_mesh = o3d.io.read_triangle_mesh(shapenet_model_file_path)
+        shapenet_model_mesh.compute_vertex_normals()
         shapenet_model_mesh.transform(shapenet_model.trans_model_to_scan_matrix)
         mesh_list.append(shapenet_model_mesh)
 
