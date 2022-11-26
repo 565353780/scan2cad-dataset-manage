@@ -49,6 +49,7 @@ def renderScan2CADObjectModelMap(shapenet_model_dict, scannet_scene_file_path=No
     mesh_list.append(scannet_object_mesh)
 
     shapenet_model_mesh = o3d.io.read_triangle_mesh(shapenet_model_file_path)
+    shapenet_model_mesh.compute_vertex_normals()
     shapenet_model_trans_matrix = np.array(shapenet_model_dict['trans_matrix'])
     shapenet_model_mesh.transform(shapenet_model_trans_matrix)
     mesh_list.append(shapenet_model_mesh)
