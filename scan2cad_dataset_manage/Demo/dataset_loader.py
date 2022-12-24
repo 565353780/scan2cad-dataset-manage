@@ -17,6 +17,12 @@ def demo():
                                    scannet_dataset_folder_path,
                                    shapenet_dataset_folder_path)
 
+    scene_name_list = dataset_loader.getSceneNameList()
+
+    #  for scene_name in scene_name_list:
+        #  print("render scene: ", scene_name)
+        #  dataset_loader.renderScan2CADScene(scene_name)
+
     #  scannet_scene_name = "scene0013_02"
     scannet_scene_name = "scene0474_02"
     assert dataset_loader.isSceneValid(scannet_scene_name)
