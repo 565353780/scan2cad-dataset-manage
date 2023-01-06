@@ -94,6 +94,19 @@ class ObjectModelMapGenerator(object):
         scene_object_model_map_dict = {}
 
         if False:
+            # tmp saving source cad model files
+            tmp_model_save_folder_path = "./tmp/source_shapenet_model/" + scene.scene_name + "/"
+            for i, shapenet_model in enumerate(scene.model_list):
+                shapenet_model_file_path = self.shapenet_dataset_folder_path + \
+                    shapenet_model.cad_cat_id + "/" + shapenet_model.cad_id + "/models/model_normalized.obj"
+                assert os.path.exists(shapenet_model_file_path)
+                mesh = o3d.io.read_triangle_mesh(shapenet_model_file_path)
+                tmp_save_path = tmp_model_save_folder_path + str(i) + "_" + \
+                    shapenet_model.cad_cat_id + "_" + shapenet_model.cad_id + ".ply"
+                createFileFolder(tmp_save_path)
+                o3d.io.write_triangle_mesh(tmp_save_path, mesh)
+
+        if False:
             # tmp saving cad model files
             tmp_model_save_folder_path = "./tmp/shapenet_model/" + scene.scene_name + "/"
             for i, shapenet_model in enumerate(scene.model_list):
