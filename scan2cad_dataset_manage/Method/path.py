@@ -22,7 +22,7 @@ def renameFile(file_path, target_file_path):
             continue
     return True
 
-def removeIfExist(file_path):
+def removeFile(file_path):
     while os.path.exists(file_path):
         try:
             os.remove(file_path)
