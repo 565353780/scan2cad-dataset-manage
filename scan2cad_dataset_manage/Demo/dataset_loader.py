@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import numpy as np
 
 sys.path.append("../mesh-manage")
 
@@ -19,9 +20,31 @@ def demo():
 
     scene_name_list = dataset_loader.getSceneNameList()
 
-    #  for scene_name in scene_name_list:
-        #  print("render scene: ", scene_name)
-        #  dataset_loader.renderScan2CADScene(scene_name)
+    model_num_list = []
+
+    for scene_name in scene_name_list:
+        model_num_list.append(
+            len(dataset_loader.dataset.scene_dict[scene_name].model_list))
+
+    #  for i in range(10):
+    #  scene_idx = np.argmax(model_num_list)
+    #  scene_name = scene_name_list[scene_idx]
+    #  model_num = len(
+    #  dataset_loader.dataset.scene_dict[scene_name].model_list)
+    #  assert model_num == model_num_list[scene_idx]
+    #  model_num_list[scene_idx] = -1
+    #  dataset_loader.renderScan2CADScene(scene_name)
+    #  print(scene_name, "->", model_num, "objects")
+    #  exit()
+
+    valid_scene_name_list = [
+        'scene0000_01', 'scene0667_01', 'scene0500_00', 'scene0247_01',
+        'scene0644_00'
+    ]
+
+    for scene_name in valid_scene_name_list:
+        dataset_loader.renderScan2CADScene(scene_name)
+    exit()
 
     #  scannet_scene_name = "scene0013_02"
     scannet_scene_name = "scene0474_02"
