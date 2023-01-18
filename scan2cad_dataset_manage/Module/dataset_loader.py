@@ -75,7 +75,7 @@ class DatasetLoader(object):
         return True
 
     def getSceneNameList(self):
-        return self.dataset.scene_dict.keys()
+        return list(self.dataset.scene_dict.keys())
 
     def isSceneValid(self, scene_name):
         return scene_name in self.dataset.scene_dict.keys()
