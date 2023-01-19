@@ -56,7 +56,7 @@ def demo():
         exit()
 
     # saving valid scene cad models
-    if True:
+    if False:
         valid_scene_name_list = valid_scene_name_list[6:]
 
         for scene_name in valid_scene_name_list:
@@ -66,11 +66,12 @@ def demo():
         exit()
 
     #  scannet_scene_name = "scene0013_02"
-    scannet_scene_name = "scene0474_02"
+    #  scannet_scene_name = "scene0474_02"
+    scannet_scene_name = valid_scene_name_list[5]
     assert dataset_loader.isSceneValid(scannet_scene_name)
 
     dataset_loader.renderScan2CADScene(scannet_scene_name)
 
-    dataset_loader.saveSceneCAD(scene_name, save_cad_folder_path,
-                                print_progress)
+    #  dataset_loader.saveSceneCAD(scene_name, save_cad_folder_path,
+                                #  print_progress)
     return True
