@@ -3,6 +3,8 @@
 
 import os
 import json
+import open3d as o3d
+from tqdm import tqdm
 
 from mesh_manage.Module.channel_mesh import ChannelMesh
 
@@ -117,4 +119,40 @@ class DatasetLoader(object):
 
         renderScan2CADScene(self.dataset.scene_dict[scannet_scene_name],
                             scannet_scene_file_path)
+        return True
+
+    def saveSceneCAD(self,
+                     scannet_scene_name,
+                     save_folder_path,
+                     print_progress=False):
+        assert scannet_scene_name in self.dataset.scene_dict.keys()
+
+        scene = self.dataset.scene_dict[scannet_scene_name]
+
+        save_folder_path = save_folder_path + scannet_scene_name + "/"
+
+        os.makedirs(save_folder_path, exist_ok=True)
+
+        for_data = enumerate(scene.model_list)
+        if print_progress:
+            print("[INFO][DatasetLoader::saveSceneCAD]")
+            print("\t start save scene cad models...")
+            for_data = tqdm(for_data, total=len(scene.model_list))
+        for i, shapenet_model in for_data:
+            shapenet_model_file_path = self.shapenet_dataset_folder_path + \
+                shapenet_model.cad_cat_id + "/" + shapenet_model.cad_id + \
+                "/models/model_normalized.obj"
+            assert os.path.exists(shapenet_model_file_path)
+            shapenet_model_mesh = o3d.io.read_triangle_mesh(
+                shapenet_model_file_path)
+            shapenet_model_mesh.transform(
+                shapenet_model.trans_model_to_scan_matrix)
+
+            shapenet_model_mesh.compute_vertex_normals()
+
+            save_file_path = save_folder_path + str(i) + ".ply"
+
+            o3d.io.write_triangle_mesh(save_file_path,
+                                       shapenet_model_mesh,
+                                       write_ascii=True)
         return True
