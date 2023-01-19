@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+
 import numpy as np
 
 sys.path.append("../mesh-manage")
@@ -28,28 +29,35 @@ def demo():
         model_num_list.append(
             len(dataset_loader.dataset.scene_dict[scene_name].model_list))
 
+    valid_scene_name_list = [
+        'scene0474_02', 'scene0000_01', 'scene0667_01', 'scene0500_00',
+        'scene0247_01', 'scene0644_00', 'scene0231_01', 'scene0653_00',
+        'scene0300_00', 'scene0569_00'
+    ]
+    valid_scene_list = [
+        scene_name.split("_")[0] for scene_name in valid_scene_name_list
+    ]
+
     # rank by object num and render
     if False:
-        for i in range(10):
+        for i in range(len(scene_name_list)):
             scene_idx = np.argmax(model_num_list)
             scene_name = scene_name_list[scene_idx]
             model_num = len(
                 dataset_loader.dataset.scene_dict[scene_name].model_list)
             assert model_num == model_num_list[scene_idx]
             model_num_list[scene_idx] = -1
+
+            if scene_name.split("_")[0] in valid_scene_list:
+                continue
+
             dataset_loader.renderScan2CADScene(scene_name)
             print(scene_name, "->", model_num, "objects")
-            exit()
+        exit()
 
     # saving valid scene cad models
-    if False:
-        valid_scene_name_list = [
-            'scene0474_02', 'scene0000_01', 'scene0667_01', 'scene0500_00',
-            'scene0247_01', 'scene0644_00'
-        ]
-        valid_scene_name_list = [
-            'scene0474_02', 'scene0000_01', 'scene0667_01', 'scene0500_00'
-        ]
+    if True:
+        valid_scene_name_list = valid_scene_name_list[6:]
 
         for scene_name in valid_scene_name_list:
             #  dataset_loader.renderScan2CADScene(scene_name)
