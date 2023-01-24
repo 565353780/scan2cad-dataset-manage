@@ -32,7 +32,8 @@ def demo():
     valid_scene_name_list = [
         'scene0474_02', 'scene0000_01', 'scene0667_01', 'scene0500_00',
         'scene0247_01', 'scene0644_00', 'scene0231_01', 'scene0653_00',
-        'scene0300_00', 'scene0569_00'
+        'scene0300_00', 'scene0569_00', 'scene0588_01', 'scene0603_01',
+        'scene0054_00', 'scene0673_04'
     ]
     valid_scene_list = [
         scene_name.split("_")[0] for scene_name in valid_scene_name_list
@@ -57,7 +58,7 @@ def demo():
 
     # saving valid scene cad models
     if False:
-        valid_scene_name_list = valid_scene_name_list[6:]
+        valid_scene_name_list = valid_scene_name_list[-4:]
 
         for scene_name in valid_scene_name_list:
             #  dataset_loader.renderScan2CADScene(scene_name)
@@ -73,5 +74,5 @@ def demo():
     dataset_loader.renderScan2CADScene(scannet_scene_name)
 
     #  dataset_loader.saveSceneCAD(scene_name, save_cad_folder_path,
-                                #  print_progress)
+    #  print_progress)
     return True
