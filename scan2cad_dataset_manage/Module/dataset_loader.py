@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import json
+import os
+from shutil import copyfile
+
 import open3d as o3d
+from mesh_manage.Module.channel_mesh import ChannelMesh
 from tqdm import tqdm
 
-from mesh_manage.Module.channel_mesh import ChannelMesh
-
 from scan2cad_dataset_manage.Data.dataset import Dataset
-
 from scan2cad_dataset_manage.Method.bbox import getNearestModelIdxByBBoxDist
 from scan2cad_dataset_manage.Method.render import renderScan2CADScene
 
@@ -132,6 +132,12 @@ class DatasetLoader(object):
         save_folder_path = save_folder_path + scannet_scene_name + "/"
 
         os.makedirs(save_folder_path, exist_ok=True)
+
+        scene_mesh_file_path = self.scannet_dataset_folder_path + scannet_scene_name + "/" + scannet_scene_name + "_vh_clean_2.ply"
+        assert os.path.exists(scene_mesh_file_path)
+
+        copyfile(scene_mesh_file_path, save_folder_path + "scene_mesh.ply")
+        return
 
         for_data = enumerate(scene.model_list)
         if print_progress:
