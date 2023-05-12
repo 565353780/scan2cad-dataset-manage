@@ -137,7 +137,6 @@ class DatasetLoader(object):
         assert os.path.exists(scene_mesh_file_path)
 
         copyfile(scene_mesh_file_path, save_folder_path + "scene_mesh.ply")
-        return
 
         for_data = enumerate(scene.model_list)
         if print_progress:
