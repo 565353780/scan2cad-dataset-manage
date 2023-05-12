@@ -73,6 +73,6 @@ def demo():
 
     dataset_loader.renderScan2CADScene(scannet_scene_name)
 
-    #  dataset_loader.saveSceneCAD(scene_name, save_cad_folder_path,
-    #  print_progress)
+    dataset_loader.saveSceneCAD(scannet_scene_name, save_cad_folder_path,
+                                print_progress)
     return True
