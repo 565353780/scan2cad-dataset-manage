@@ -17,6 +17,9 @@ def demo():
     save_cad_folder_path = "./output/cad/"
     print_progress = True
 
+    render_scene_by_obj_num = False
+    save_all_valid_scene_cad_models = False
+
     dataset_loader = DatasetLoader(dataset_folder_path,
                                    scannet_dataset_folder_path,
                                    shapenet_dataset_folder_path)
@@ -40,8 +43,8 @@ def demo():
     ]
 
     # rank by object num and render
-    if False:
-        for i in range(len(scene_name_list)):
+    if render_scene_by_obj_num:
+        for _ in range(len(scene_name_list)):
             scene_idx = np.argmax(model_num_list)
             scene_name = scene_name_list[scene_idx]
             model_num = len(
@@ -54,21 +57,21 @@ def demo():
 
             dataset_loader.renderScan2CADScene(scene_name)
             print(scene_name, "->", model_num, "objects")
-        exit()
+        return True
 
     # saving valid scene cad models
-    if False:
+    if save_all_valid_scene_cad_models:
         valid_scene_name_list = valid_scene_name_list[-4:]
 
         for scene_name in valid_scene_name_list:
             #  dataset_loader.renderScan2CADScene(scene_name)
             dataset_loader.saveSceneCAD(scene_name, save_cad_folder_path,
                                         print_progress)
-        exit()
+        return True
 
     #  scannet_scene_name = "scene0013_02"
     #  scannet_scene_name = "scene0474_02"
-    scannet_scene_name = valid_scene_name_list[5]
+    scannet_scene_name = valid_scene_name_list[10]
     assert dataset_loader.isSceneValid(scannet_scene_name)
 
     dataset_loader.renderScan2CADScene(scannet_scene_name)
